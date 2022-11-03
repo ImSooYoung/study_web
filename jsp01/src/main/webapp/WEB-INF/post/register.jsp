@@ -10,13 +10,13 @@
 
     <h1>포스트 등록 페이지</h1>
     <form method="post">
-        <input type="number" name="id" placeholder="글 번호" required />
+        <input type="number" name="id" placeholder="글 번호" required autofocus/>
         <br/>
-        <input type="text" name="title" placeholder="글 제목" />
+        <input type="text" name="title" placeholder="글 제목" required/>
         <br/>
-        <textarea name="content" placeholder="글 내용"></textarea>
+        <textarea rows="5" cols="30" name="content" placeholder="글 내용" required></textarea>
         <br/>
-        <input type="datetime-local" name="createTime" />
+        <input type="datetime-local" name="createTime" required/>
         <br/>
         <input type="submit" value="등록" />
     </form>

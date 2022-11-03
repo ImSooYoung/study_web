@@ -42,23 +42,25 @@ public class PostRegisterController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("postRegisterController.doPost() 호출");
 		
+		// request 객체의 인코딩 타입 설정 -> 한글 처리
 		request.setCharacterEncoding("UTF-8");
 		
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		// 요청 파라미터(request parameter) 분석
+		Integer id = Integer.valueOf(request.getParameter("id"));
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
+
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+//		LocalDateTime createTime =  LocalDateTime.parse(request.getParameter("createTime"), formatter);
+		LocalDateTime createTime =  LocalDateTime.parse(request.getParameter("createTime"));
 		
-		System.out.println(request.getParameter("createTime"));
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-		
-		LocalDateTime createTime =  LocalDateTime.parse(request.getParameter("createTime"), formatter);
-		System.out.println(createTime);
-		
+		// Post 타입 객체 생성
 		Post post = new Post(id, title, content, createTime);
 		
+		// Post 객체를 request의 속성 값으로 추가 -> View에 전달
 		request.setAttribute("post", post);
 		
+		// View(JSP)로 이동
 		request.getRequestDispatcher("/WEB-INF/post/register-result.jsp")
         .forward(request, response);
 		

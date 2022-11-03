@@ -50,5 +50,10 @@ public class Post {
         this.createTime = createTime;
     };
     
+    // toString
+    @Override
+    public String toString() {
+        return "Post [id=" + id + ", title=" + title + ", content=" + content + ", createTime=" + createTime + "]";
+    }
     
 }

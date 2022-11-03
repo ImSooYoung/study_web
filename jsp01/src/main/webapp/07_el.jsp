@@ -29,7 +29,7 @@
     (3) CSS 스타일 프로퍼티 값을 설정할 때 사용 가능.
     (4) JavaScript 코드와 함께 사용 가능.
      --%>
-     <%-- JSP 는 Java에서, JavaScript는 브라우저에서 실행됨 --%>
+    <%-- JSP 는 Java에서, JavaScript는 브라우저에서 실행됨 --%>
 
 </body>
 </html>
