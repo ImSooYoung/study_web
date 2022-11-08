@@ -14,11 +14,11 @@ import edu.web.jsp02.service.PostServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Servlet implementation class PostCreateController
+ * Servlet implementation class PostModifyController
  */
 @Slf4j
-@WebServlet(name = "postCreateController", urlPatterns = { "/post/create" })
-public class PostCreateController extends HttpServlet {
+@WebServlet(name = "postModifyController", urlPatterns = { "/post/modify" })
+public class PostModifyController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private PostService postService;
@@ -26,7 +26,7 @@ public class PostCreateController extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostCreateController() {
+    public PostModifyController() {
         postService = PostServiceImpl.getInstance();
     }
 
@@ -36,41 +36,42 @@ public class PostCreateController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("doGet()");
 		
-		// 포스트 작성 뷰(JSP) 이동
-		request.getRequestDispatcher("/WEB-INF/post/create.jsp")
+		Integer id = Integer.valueOf(request.getParameter("id"));
+		log.info("id = {}", id);
+		
+		// id(포스트 번호)로 레코드 찾기.
+		Post post = postService.read(id);
+		
+		// 뷰에 전달
+		request.setAttribute("post", post);
+		request.getRequestDispatcher("/WEB-INF/post/modify.jsp")
 		    .forward(request, response);
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("doPost()");
 		
-		request.setCharacterEncoding("UTF-8");
-		
-		// 요청 파라미터 분석: title, content, author 값을 찾음.
+		Integer id = Integer.valueOf(request.getParameter("id"));
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String author = request.getParameter("author");
 		
-		// PostCreateDto 타입 객체 생성
-//		PostCreateDto dto = new PostCreateDto();
-//		dto.setTitle(title);
-//		dto.setContent(content);
-//		dto.setAuthor(author);
-		
 		PostCreateDto dto = new PostCreateDto().builder()
 		            .title(title).content(content).author(author)
 		            .build();
-		log.info("dto = {}", dto);
 		
-		// postService.create(dto) 메서드 호출 --> postDao 호출 --> DB에 저장
-		int result = postService.create(dto);
-		log.info("result = {}", result);
+		postService.update(id, dto);
 		
-		// 포스트 목록 페이지 이동(redirect)
-		response.sendRedirect("/jsp02/post");
+//		response.sendRedirect("/jsp02/post");
+		Post post = postService.read(id);
+        log.info("post = {}", post);
+        
+        request.setAttribute("post", post);
+        request.getRequestDispatcher("/WEB-INF/post/detail.jsp")
+            .forward(request, response);
 		
 	}
 

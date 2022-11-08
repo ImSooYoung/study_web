@@ -17,7 +17,8 @@
     <div>
         <ul>
             <li>
-                <a href="post">포스트 전체 목록</a>
+                <c:url var="post" value="/post"></c:url>
+                <a href="${ post }">포스트 전체 목록</a>
             </li>
         </ul>
     </div>

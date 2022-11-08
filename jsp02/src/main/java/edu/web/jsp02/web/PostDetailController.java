@@ -1,8 +1,6 @@
 package edu.web.jsp02.web;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,19 +13,19 @@ import edu.web.jsp02.service.PostServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Servlet implementation class PostListController
+ * Servlet implementation class PostDetailController
  */
-@Slf4j // Logger 객체 자동 생성.
-@WebServlet(name = "postListController", urlPatterns = { "/post" })
-public class PostListController extends HttpServlet {
+@Slf4j
+@WebServlet(name = "postDetailController", urlPatterns = { "/post/detail" })
+public class PostDetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
 	private PostService postService;
 	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostListController() {
+    public PostDetailController() {
         postService = PostServiceImpl.getInstance();
     }
 
@@ -36,18 +34,20 @@ public class PostListController extends HttpServlet {
 	 */
     @Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		log.info("doGet()");
-		
-		// PostService 객체의 메서드를 호출해서 포스트 목록 전체를 읽어옴.
-		List<Post> list = postService.read();
-		log.info("# of list = {}", list.size());
-		
-		// 포스트 목록을 뷰에 전달하기 위해서 request 객체에 속성 값으로 저장.
-		request.setAttribute("posts", list);
-		
-		// 뷰로 페이지 이동(forward).
-		request.getRequestDispatcher("/WEB-INF/post/list.jsp")
-		    .forward(request, response);		
-	}
+        log.info("doGet()");
+        
+        // Query string에 포함된 요청 파라미터 id(Post 번호) 값을 읽음.
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        log.info("id = {}", id);
+        
+        // 서비스 객체의 메서드를 호출해서 DB에 저장된 해당 id의 Post를 읽음.
+        Post post = postService.read(id);
+        log.info("post = {}", post);
+        
+        // 뷰에 전달.
+        request.setAttribute("post", post);
+        request.getRequestDispatcher("/WEB-INF/post/detail.jsp")
+            .forward(request, response);
+    }
 
 }

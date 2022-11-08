@@ -87,7 +87,7 @@ public class Post {
             return this;
         }
         
-        public PostBuilder createdTime(LocalDateTime createTime) {
+        public PostBuilder createdTime(LocalDateTime createdTime) {
             this.createdTime = createdTime;
             return this;
         }
