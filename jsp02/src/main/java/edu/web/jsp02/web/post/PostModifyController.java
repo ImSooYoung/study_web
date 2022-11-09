@@ -1,4 +1,4 @@
-package edu.web.jsp02.web;
+package edu.web.jsp02.web.post;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.web.jsp02.domain.Post;
 import edu.web.jsp02.dto.PostCreateDto;
+import edu.web.jsp02.dto.PostUpdateDto;
 import edu.web.jsp02.service.PostService;
 import edu.web.jsp02.service.PostServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -54,24 +55,23 @@ public class PostModifyController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("doPost()");
 		
-		Integer id = Integer.valueOf(request.getParameter("id"));
-		String title = request.getParameter("title");
-		String content = request.getParameter("content");
-		String author = request.getParameter("author");
+		Integer id = Integer.valueOf(request.getParameter("id")); // 변경할 글 번호
+		String title = request.getParameter("title"); // 변경할 글 제목
+		String content = request.getParameter("content"); // 변경할 글 내용
 		
-		PostCreateDto dto = new PostCreateDto().builder()
-		            .title(title).content(content).author(author)
+		
+		PostUpdateDto dto = new PostUpdateDto().builder()
+		            .id(id).title(title).content(content)
 		            .build();
 		
-		postService.update(id, dto);
+		// postService 메서드 호출 -> DB에 업데이트 되도록.
+		int result = postService.update(dto);
+		log.info("post update result = {}", result);
 		
-//		response.sendRedirect("/jsp02/post");
-		Post post = postService.read(id);
-        log.info("post = {}", post);
-        
-        request.setAttribute("post", post);
-        request.getRequestDispatcher("/WEB-INF/post/detail.jsp")
-            .forward(request, response);
+		// 상세보기 이동(Redirect)
+		response.sendRedirect("/jsp02/post/detail?id=" + id);
+		
+		// PRG(Post - Redirect - Get) 패턴
 		
 	}
 

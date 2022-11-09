@@ -1,4 +1,4 @@
-package edu.web.jsp02.web;
+package edu.web.jsp02.web.post;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -71,6 +71,8 @@ public class PostCreateController extends HttpServlet {
 		
 		// 포스트 목록 페이지 이동(redirect)
 		response.sendRedirect("/jsp02/post");
+		
+		// PRG(Post- Redirect - Get) 패턴
 		
 	}
 

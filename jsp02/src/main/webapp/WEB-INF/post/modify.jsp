@@ -95,6 +95,15 @@
     btnUpdate.addEventListener("click", function(event){
     	event.preventDefault();
     	
+    	const title = document.querySelector("#title").value;
+    	
+    	const content = document.querySelector('#content').value;
+    	
+    	if (title == '' || content == '') {
+    		alert("제목과 내용은 반드시 입력해야 합니다.");
+    		return;
+    	}
+    	
     	const check = confirm("정말 수정?");
     	if (check == true) {
     		form.action = '${ postUpdatePage }';
