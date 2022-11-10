@@ -4,8 +4,17 @@ import java.util.List;
 
 import edu.web.jsp02.domain.User;
 import edu.web.jsp02.dto.UserCreateDto;
+import edu.web.jsp02.dto.UserSignUpDto;
 
 public interface UserService {
+    
+    
+    int signUp(UserSignUpDto dto);
+    
+    User signIn(String username, String password);
+    
+    
+    
     public List<User> read(); // User의 전체 목록 불러오기
     
     public int create(UserCreateDto dto); // User 등록

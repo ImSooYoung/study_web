@@ -6,9 +6,16 @@ import edu.web.jsp02.domain.User;
 
 public interface UserDao {
     
+    public int insert(User entity);
+
+    public User selectByUsernameAndPassword(User user);
+    
+    
+    
+    
     public List<User> select();
     
-    public int insert(User entity);
+    public int insertUser(User entity);
     
     public User selectById(Integer id);
     

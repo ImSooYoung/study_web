@@ -33,6 +33,7 @@ public class PostServiceImpl implements PostService {
         return instance;
     }
     
+    
     @Override
     public List<Post> read() {
         log.info("read()");

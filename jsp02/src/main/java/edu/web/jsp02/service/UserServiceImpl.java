@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.web.jsp02.domain.User;
 import edu.web.jsp02.dto.UserCreateDto;
+import edu.web.jsp02.dto.UserSignUpDto;
 import edu.web.jsp02.repository.UserDao;
 import edu.web.jsp02.repository.UserDaoImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,28 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
     
+
+    @Override
+    public int signUp(UserSignUpDto dto) {
+        log.info("signUp(dto = {})", dto);
+        
+        return userDao.insert(dto.toEntity());
+    }
+
+    @Override
+    public User signIn(String username, String password) {
+        log.info("signIn(username={}, password={})", username, password);
+        
+        User user = User.builder()
+                .userName(username).password(password)
+                .build();
+        
+        return userDao.selectByUsernameAndPassword(user);
+    }
+    
+    
+    
+    
     @Override
     public List<User> read() {
         log.info("read()");
@@ -38,7 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int create(UserCreateDto dto) {
         log.info("create(dto = {})", dto);
-        return userDao.insert(dto.toEntity());
+        return userDao.insertUser(dto.toEntity());
     }
 
     @Override
@@ -61,6 +84,6 @@ public class UserServiceImpl implements UserService {
         
         return userDao.update(user);
     }
-    
+
 
 }
