@@ -13,13 +13,21 @@
         
         <nav>
             <ul>
+                <%-- 로그인 정보가 있으면 --%>
+                <c:if test="${ not empty signInUser }">
+                    <li>
+                        <span>${ signInUser }</span>
+                        <c:url var="signOutPage" value="/user/signout"></c:url>
+                        <a href="${ signOutPage }">로그아웃</a>
+                    </ll>
+                </c:if>
                 <li>
                     <c:url var="mainPage" value="/"></c:url>
                     <a href="${ mainPage }">메인 페이지</a>
                 </li>
                 <li>
-                    <c:url var="post"  value="/post"></c:url>
-                    <a href="${ post }">목록 페이지</a>
+                    <c:url var="postListPage"  value="/post"></c:url>
+                    <a href="${ postListPage }">목록 페이지</a>
                 </li>
             </ul>
         </nav>
@@ -35,7 +43,8 @@
                     </textarea>
                 </div>
                 <div>
-                    <input type="text" name="author" placeholder="작성자" required />
+                    <%-- 작성자 input은 로그인한 사용자 아이디로 세팅. --%>
+                    <input type="hidden" name="author" value="${ signInUser }" readonly/>
                 </div>
                 <div>
                     <input type="submit" value="작성 완료" />

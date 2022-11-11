@@ -16,6 +16,14 @@
         
         <nav>
             <ul>
+                <c:if test="${ not empty signInUser }">
+                    <li>
+                        <span>${ signInUser }</span>
+                        <c:url var="signOutPage" value="/user/signout"></c:url>
+                        <a href="${ signOutPage }">로그아웃</a>
+                    </li>
+                </c:if>
+                
                 <li>
                     <c:url var="mainPage" value="/"></c:url>
                     <a href="${ mainPage }">메인 페이지</a>
@@ -24,12 +32,15 @@
                     <c:url var="postListPage" value="/post"></c:url>
                     <a href="${ postListPage }">포스트 목록</a>
                 </li>
-                <li>
-                    <c:url var="postModifyPage" value="/post/modify">
-                        <c:param name="id" value="${ post.id }"></c:param>
-                    </c:url>
-                    <a href="${ postModifyPage }">포스트 수정</a>
-                </li>
+                
+                <c:if test="${ signInUser == post.author }">
+                    <li>
+                        <c:url var="postModifyPage" value="/post/modify">
+                            <c:param name="id" value="${ post.id }"></c:param>
+                        </c:url>
+                        <a href="${ postModifyPage }">포스트 수정</a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
         
