@@ -5,31 +5,22 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>JSP 2</title>
+    <title>Spring 2</title>
 </head>
 <body>
+    
     <div>
         <h1>포스트 작성 페이지</h1>
         
         <nav>
-            <ul>
-                <%-- 로그인 정보가 있으면 --%>
-                <c:if test="${ not empty signInUser }">
-                    <li>
-                        <span>${ signInUser }</span>
-                        <c:url var="signOutPage" value="/user/signout"></c:url>
-                        <a href="${ signOutPage }">로그아웃</a>
-                    </ll>
-                </c:if>
-                <li>
-                    <c:url var="mainPage" value="/"></c:url>
-                    <a href="${ mainPage }">메인 페이지</a>
-                </li>
-                <li>
-                    <c:url var="postListPage"  value="/post"></c:url>
-                    <a href="${ postListPage }">목록 페이지</a>
-                </li>
-            </ul>
+            <li>
+                <c:url var="mainPage" value="/home"></c:url>
+                <a href="${ mainPage }">메인 페이지</a>
+            </li>
+            <li>
+                <c:url var="postListPage"  value="/list"></c:url>
+                <a href="${ postListPage }">목록 페이지</a>
+            </li>
         </nav>
         
         <main>
@@ -43,14 +34,15 @@
                     </textarea>
                 </div>
                 <div>
-                    <%-- 작성자 input은 로그인한 사용자 아이디로 세팅. --%>
-                    <input type="hidden" name="author" value="${ signInUser }" readonly/>
+                    <input type="text" name="author" placeholder="작성자" required/>
                 </div>
                 <div>
                     <input type="submit" value="작성 완료" />
                 </div>
             </form>
         </main>
+        
     </div>
+
 </body>
 </html>
