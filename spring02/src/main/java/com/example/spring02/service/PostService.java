@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.spring02.domain.Post;
+import com.example.spring02.dto.PostCreateDto;
 import com.example.spring02.mapper.PostMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -28,24 +29,44 @@ public class PostService {
     private final PostMapper postMapper; // (2)
     
     public List<Post> read() {
+        log.info("read()");
+        
         return postMapper.selectOrderByIdDesc();
     }
     
-    public int create(Post post) {
-        return postMapper.insert(post);
+    public int create(PostCreateDto dto) {
+        log.info("create(dto={})", dto);
+        
+        return postMapper.insert(dto.toEntity());
     }
     
-    public Post readById(int id) {
+    public Post read(Integer id) {
+        log.info("read(id={})", id);
+        
         return postMapper.selectById(id);
     }
-    
-    public int update(Post post) {
-        return postMapper.updateTitleAndContentById(post);
-    }
-    
-    public int delete(int id) {
+
+    public int delete(Integer id) {
+        log.info("delete=(id={})", id);
+        
         return postMapper.deleteById(id);
     }
     
     
+//    public int create(Post post) {
+//        return postMapper.insert(post);
+//    }
+//    
+//    public Post readById(int id) {
+//        return postMapper.selectById(id);
+//    }
+//    
+//    public int update(Post post) {
+//        return postMapper.updateTitleAndContentById(post);
+//    }
+//    
+//    public int delete(int id) {
+//        return postMapper.deleteById(id);
+//    }
+
 }

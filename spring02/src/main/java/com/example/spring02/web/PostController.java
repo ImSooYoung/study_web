@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.spring02.domain.Post;
 import com.example.spring02.dto.PostCreateDto;
@@ -17,103 +18,178 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/post")
+// -> 클래스에 @RequestMapping 애너테이션을 사용하면,
+// -> 그 클래스의 모든 메서드들의 매핑 주소는 @RequestMapping에서 설정된 URL로 시작함.
 @Controller // 스프링 컨테이너가 Bean으로 생성, 관리
 public class PostController {
     
     private final PostService postService; // 생성자에 의한 의존성 주입
     
-    @GetMapping("/home")
-    public String home() {
-        log.info("home()");
-        
-        return "/home";
-    }
-    
     @GetMapping("/list")
     public String list(Model model) {
         log.info("list()");
         
+        // Service 계층의 메서드르 사용해서 포스트 전체 목록을 검색함.
         List<Post> list = postService.read();
+        
+        // 포스트 목록을 뷰에 전달하기 위해서 model을 이용.
         model.addAttribute("list", list);
         
-        return "/list";
+            
+        
+        return "/post/list"; // /WEB-INF/views/post/list.jsp
     }
     
+    // 새 글 작성
     @GetMapping("/create")
     public String create() {
         log.info("create()");
         
-        return "/create";
+        return "/post/create";
     }
     
     @PostMapping("/create")
-    public String createPost(PostCreateDto post, Model model) {
-        log.info("createPost(post = {})", post);
+    public String create(PostCreateDto dto) {
+        log.info("create(dto={})", dto);
         
-        Post entity = post.toEntity();
-        int result = postService.create(entity);
-
-        List<Post> list = postService.read();
-        model.addAttribute("list", list);
+        // 서비스 계층이 메서드를 호출해서 포스트 작성 내용을 DB에 저장.
+        postService.create(dto);
         
-        return "/list";
+        // 포스트 목록 페이지로 이동(redirect): PRG(Post - Redirect - Get)
+        return "redirect:/post/list";
     }
     
+    // 상세보기
     @GetMapping("/detail")
-    public String detail(Model model, int id) {
-        log.info("detail(id = {})", id);
+    public String detail(Integer id, Model model) {
+        log.info("detail(id={})", id);
         
-        Post post = postService.readById(id);
-        model.addAttribute("id", post.getId());
-        model.addAttribute("title", post.getTitle());
-        model.addAttribute("content", post.getContent());
-        model.addAttribute("author", post.getAuthor());
-        model.addAttribute("modifiedTime", post.getModified_time());
-        model.addAttribute("createdTime", post.getCreated_time());
+        Post post = postService.read(id);
+        model.addAttribute("post", post);
         
-        return "/detail";
+        return "/post/detail";
     }
     
+    // 수정페이지
     @GetMapping("/modify")
-    public String modify(int id, Model model) {
-        log.info("modify()");
+    public String modify(Integer id, Model model) {
+        log.info("modify(id={})", id);
         
-        Post post = postService.readById(id);
+        Post post = postService.read(id);
+        model.addAttribute("post", post);
         
-        model.addAttribute("id", id);
-        model.addAttribute("author", post.getAuthor());
-        
-        return "/modify";
+        return "/post/modify";
     }
     
-    @PostMapping("/modify")
-    public String modifyPost(PostUpdateDto post, Model model) {
-        log.info("modifyPost(post = {})", post);
-        
-        Post entity = post.toEntity();
-        int result = postService.update(entity);
-        log.info("result = {}", result);
-
-        List<Post> list = postService.read();
-        model.addAttribute("list", list);
-        
-        return "/list";
-    }
-    
+    // 삭제 컨트롤러 메서드
     @PostMapping("/delete")
-    public String delete(int id, Model model) {
-        log.info("delete(id= {})", id);
+    public String delete(Integer id) {
+        log.info("delete(id={})", id);
         
         postService.delete(id);
         
-        List<Post> list = postService.read();
-        model.addAttribute("list", list);
+        return "redirect:/post/list";
+    }
+    
+    // 업데이트 메서드
+    @PostMapping("/update")
+    public String update(PostUpdateDto dto) {
+        log.info("update(dto={})", dto);
         
-        return "/list";
+        return "/post/list";
     }
     
     
-    
-    // TODO: 목록/새 글 작성/상세보기/수정페이지/수정/삭제 컨트롤러 메서드
-    
+  
+//    @GetMapping("/home")
+//    public String home() {
+//        log.info("home()");
+//        
+//        return "/home";
+//    }
+//    
+//    @GetMapping("/list")
+//    public String list(Model model) {
+//        log.info("list()");
+//        
+//        List<Post> list = postService.read();
+//        model.addAttribute("list", list);
+//        
+//        return "/list";
+//    }
+//    
+//    @GetMapping("/create")
+//    public String create() {
+//        log.info("create()");
+//        
+//        return "/create";
+//    }
+//    
+//    @PostMapping("/create")
+//    public String createPost(PostCreateDto post, Model model) {
+//        log.info("createPost(post = {})", post);
+//        
+//        Post entity = post.toEntity();
+//        int result = postService.create(entity);
+//
+//        List<Post> list = postService.read();
+//        model.addAttribute("list", list);
+//        
+//        return "/list";
+//    }
+//    
+//    @GetMapping("/detail")
+//    public String detail(Model model, int id) {
+//        log.info("detail(id = {})", id);
+//        
+//        Post post = postService.readById(id);
+//        model.addAttribute("id", post.getId());
+//        model.addAttribute("title", post.getTitle());
+//        model.addAttribute("content", post.getContent());
+//        model.addAttribute("author", post.getAuthor());
+//        model.addAttribute("modifiedTime", post.getModified_time());
+//        model.addAttribute("createdTime", post.getCreated_time());
+//        
+//        return "/detail";
+//    }
+//    
+//    @GetMapping("/modify")
+//    public String modify(int id, Model model) {
+//        log.info("modify()");
+//        
+//        Post post = postService.readById(id);
+//        
+//        model.addAttribute("id", id);
+//        model.addAttribute("author", post.getAuthor());
+//        
+//        return "/modify";
+//    }
+//    
+//    @PostMapping("/modify")
+//    public String modifyPost(PostUpdateDto post, Model model) {
+//        log.info("modifyPost(post = {})", post);
+//        
+//        Post entity = post.toEntity();
+//        int result = postService.update(entity);
+//        log.info("result = {}", result);
+//
+//        List<Post> list = postService.read();
+//        model.addAttribute("list", list);
+//        
+//        return "/list";
+//    }
+//    
+//    @PostMapping("/delete")
+//    public String delete(int id, Model model) {
+//        log.info("delete(id= {})", id);
+//        
+//        postService.delete(id);
+//        
+//        List<Post> list = postService.read();
+//        model.addAttribute("list", list);
+//        
+//        return "/list";
+//    }
+
 }

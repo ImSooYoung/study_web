@@ -25,7 +25,7 @@
                     <a href="${ postListPage }">포스트 목록</a>
                 </li>
                 <li>
-                    <c:url var="postModifyPage" value="/detail">
+                    <c:url var="postModifyPage" value="/modify">
                         <c:param name="id" value="${ id }"></c:param>
                     </c:url>
                     <a href="${ postModifyPage }">포스트 상세</a>
