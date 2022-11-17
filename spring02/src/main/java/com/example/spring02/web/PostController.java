@@ -97,99 +97,10 @@ public class PostController {
     public String update(PostUpdateDto dto) {
         log.info("update(dto={})", dto);
         
-        return "/post/list";
+        postService.update(dto);
+        
+        return "redirect:/post/list";
     }
     
-    
-  
-//    @GetMapping("/home")
-//    public String home() {
-//        log.info("home()");
-//        
-//        return "/home";
-//    }
-//    
-//    @GetMapping("/list")
-//    public String list(Model model) {
-//        log.info("list()");
-//        
-//        List<Post> list = postService.read();
-//        model.addAttribute("list", list);
-//        
-//        return "/list";
-//    }
-//    
-//    @GetMapping("/create")
-//    public String create() {
-//        log.info("create()");
-//        
-//        return "/create";
-//    }
-//    
-//    @PostMapping("/create")
-//    public String createPost(PostCreateDto post, Model model) {
-//        log.info("createPost(post = {})", post);
-//        
-//        Post entity = post.toEntity();
-//        int result = postService.create(entity);
-//
-//        List<Post> list = postService.read();
-//        model.addAttribute("list", list);
-//        
-//        return "/list";
-//    }
-//    
-//    @GetMapping("/detail")
-//    public String detail(Model model, int id) {
-//        log.info("detail(id = {})", id);
-//        
-//        Post post = postService.readById(id);
-//        model.addAttribute("id", post.getId());
-//        model.addAttribute("title", post.getTitle());
-//        model.addAttribute("content", post.getContent());
-//        model.addAttribute("author", post.getAuthor());
-//        model.addAttribute("modifiedTime", post.getModified_time());
-//        model.addAttribute("createdTime", post.getCreated_time());
-//        
-//        return "/detail";
-//    }
-//    
-//    @GetMapping("/modify")
-//    public String modify(int id, Model model) {
-//        log.info("modify()");
-//        
-//        Post post = postService.readById(id);
-//        
-//        model.addAttribute("id", id);
-//        model.addAttribute("author", post.getAuthor());
-//        
-//        return "/modify";
-//    }
-//    
-//    @PostMapping("/modify")
-//    public String modifyPost(PostUpdateDto post, Model model) {
-//        log.info("modifyPost(post = {})", post);
-//        
-//        Post entity = post.toEntity();
-//        int result = postService.update(entity);
-//        log.info("result = {}", result);
-//
-//        List<Post> list = postService.read();
-//        model.addAttribute("list", list);
-//        
-//        return "/list";
-//    }
-//    
-//    @PostMapping("/delete")
-//    public String delete(int id, Model model) {
-//        log.info("delete(id= {})", id);
-//        
-//        postService.delete(id);
-//        
-//        List<Post> list = postService.read();
-//        model.addAttribute("list", list);
-//        
-//        return "/list";
-//    }
 
 }
