@@ -10,9 +10,6 @@ public interface UserDao {
 
     public User selectByUsernameAndPassword(User user);
     
-    
-    
-    
     public List<User> select();
     
     public int insertUser(User entity);

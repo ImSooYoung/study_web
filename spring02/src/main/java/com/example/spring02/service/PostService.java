@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.spring02.domain.Post;
 import com.example.spring02.dto.PostCreateDto;
+import com.example.spring02.dto.PostSearchDto;
 import com.example.spring02.dto.PostUpdateDto;
 import com.example.spring02.mapper.PostMapper;
 
@@ -59,5 +60,12 @@ public class PostService {
         return postMapper.updateTitleAndContentById(dto.toEntity());
     }
     
-
+    public List<Post> searchByKeyword(PostSearchDto dto) {
+        log.info("search(dto={})", dto);
+        
+        dto.setKeyword("%" + dto.getKeyword().toLowerCase() + "%");
+        
+        return postMapper.selectByKeywordOrderByIdDesc(dto);
+    }
+    
 }

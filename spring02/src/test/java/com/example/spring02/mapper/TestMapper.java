@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.spring02.domain.Post;
+import com.example.spring02.domain.User;
+import com.example.spring02.dto.UserUpdateDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +25,7 @@ public class TestMapper {
     @Autowired
     private PostMapper postMapper;
     
-    @Test
+//    @Test
     public void testSelectById() {
         Post post = postMapper.selectById(2);
         Assertions.assertNotNull(post);
@@ -47,6 +49,46 @@ public class TestMapper {
         for (Post p : list) {
             log.info(p.toString());
         }
+    }
+    
+    
+    @Autowired
+    private UserMapper userMapper;
+    
+//    @Test
+    public void testUserMapper() {
+        Assertions.assertNotNull(userMapper);
+        log.info("userMapper = {}", userMapper);
+        
+        User user = User.builder()
+                    .userName("test1")
+                    .password("test1")
+                    .email("test@test.com")
+                    .build();
+//        int result = userMapper.insert(user);
+//        Assertions.assertEquals(1, result);
+        
+        List<User> list = userMapper.selectOrderByIdDesc();
+        for (User u : list) {
+            log.info(u.toString());
+        }
+        
+        User user1 = userMapper.selectById(16);
+        log.info(user1.toString());
+    }
+    
+    @Test
+    public void testUserUpdate() {
+        Assertions.assertNotNull(userMapper);
+        
+        UserUpdateDto user = UserUpdateDto.builder()
+                .id(24)
+                .userName("admin1")
+                .password("test1")
+                .email("test@")
+                .build();
+        int result = userMapper.updateById(user);
+        Assertions.assertEquals(1, result);
     }
     
     

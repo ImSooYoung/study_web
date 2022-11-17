@@ -105,6 +105,13 @@
     	event.preventDefault();
     	const result = confirm("정말 수정?");
     	if (result) {
+    		const title = document.querySelector("#title").value;
+    		const content = document.querySelector("#content").value;
+    		if (title == '' || content == '') {
+    			alert("제목 또는 내용은 반드식 입력!");
+    			return;
+    		}
+    		
     		form.action = '${ postUpdatePage }';
     		form.method = 'post';
     		form.submit();
